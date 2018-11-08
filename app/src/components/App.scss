@@ -1,0 +1,107 @@
+.wrapper {  
+    background: white; 
+    padding: 3em 2em 3em 2em;
+	max-width: 94%;
+	margin: 7em auto 5em auto;
+}
+
+.custom-container {
+	width: 98% !important;
+}
+
+.right-divider {
+	border-right: solid 5px #a0a0a0
+}
+
+.left-divider {
+	border-left: solid 5px #a0a0a0
+}
+
+.wider-column {
+	padding-right: 0.25rem !important;
+	padding-left: 0.25rem !important;
+}
+
+.small-top-padding {
+	padding-top: 0.75rem !important;
+}
+
+.topless-row {
+	padding-top: 0 !important; 
+}
+
+.center-text {
+	text-align: center;
+}
+
+.small-text {
+	font-size: 0.7em !important;
+}
+
+.version {
+	position: fixed !important;
+	height: 10pt;
+	width: 50pt;
+	bottom: 20pt;
+	right: 0;
+	opacity: .4;
+}
+
+.centered-statistic {
+	min-width: 100% !important;
+}
+
+.popupLabel {
+	max-width: 160px !important;
+}
+
+.login-container {
+	position: absolute; /* or absolute */
+ 	top: 50%;
+ 	left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 5% !important;
+}
+
+.login-card {
+	padding: 10% !important
+}
+
+.login-form {
+    min-width: 300px;
+    max-width: 300px;
+}
+.login-form-forgot {
+    float: right;
+}
+.login-form-button {
+    width: 100%;
+}
+.login-logo-container{
+    width: 100%;
+    text-align: center;
+}
+.login-logo {
+    max-height: 3em;
+    background: transparent;
+    border-radius: 6px;
+	margin-left: 1em;
+	margin-right: 1em;
+	vertical-align: top;
+	display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.login-title {
+	padding-bottom: 1em;
+}
+
+.logo {
+	height: 1.2em;
+	background: transparent;
+	vertical-align: top;
+}
+body {
+	background-color: #F2F3F4;
+}
