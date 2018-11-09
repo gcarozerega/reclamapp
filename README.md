@@ -14,6 +14,7 @@ Based on [this tutorial](http://blog.joanboixados.com/building-a-boilerplate-for
 
 - NodeJS >= v6.6.0
 - npm >= 30.10.7
+- gulp
 
 ## Installation
 
