@@ -158,11 +158,6 @@ export default class CreateComplaint extends React.Component {
                     success={this.state.success}
                 >
                     <Message
-                            error
-                            header={this.state.errorHeader}
-                            content={this.state.errorContent}
-                    />
-                    <Message
                             success
                             icon={"check"}
                             header={"Éxito"}

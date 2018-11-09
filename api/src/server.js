@@ -13,6 +13,13 @@ var authConfig = require('./auth/config');
 const jwt = require('jsonwebtoken');
 var authActions = require('./auth/auth_actions');
 
+var mailgun = require("mailgun-js");
+var api_key = 'de8184aef958feebad90b89bb95baf00-4412457b-a647343b';
+var DOMAIN = 'sandbox5302d602d53847748ae9f280cf47500d.mailgun.org';
+var mailgun = require('mailgun-js')({apiKey: api_key, domain: DOMAIN});
+
+const nodemailer = require('nodemailer');
+
 var db_location = '127.0.0.1';
 
 var db_port = '5984';
@@ -215,6 +222,25 @@ io.on('connection', co.wrap( function*(socket){
     })
   }
 
+  socket.on('manage_complaint',co.wrap(function*(data) {
+    authLock(data.token,co.wrap(function*(){
+      var res = yield db.get(data.complaint_id);
+      var complaint_obj = res[0];
+      socket.emit('manage_complaint_response', complaint_obj);
+    }))
+    // console.log(data);
+    
+  }));
+
+  socket.on('manage_community',co.wrap(function*(data) {
+    authLock(data.token,co.wrap(function*(){
+      var res = yield community_db.get(data.community_id);
+      var community_obj = res[0];
+      socket.emit('manage_community_response', community_obj);
+    }))
+    // console.log(data);
+    
+  }));
 
   socket.on('all_complaints',co.wrap(function*(data) { 
     let res_man = yield db.view('complaint','all_complaints');
@@ -341,10 +367,12 @@ io.on('connection', co.wrap( function*(socket){
       let data = _data.complaint;
       console.log("complaint to update: "+ data.complaint_id);
       var db_complaint = yield db.get(data.complaint_id);
-      data['_rev'] = db_event[0]._rev;
-      data['type'] = 'complaint';
+      data['_rev'] = db_complaint[0]._rev;
       console.log(data);
 
+      if(data.solution){
+        data.status = 2;
+      }
       yield global.db.insert(data, db_complaint[0]._id, 
       function (error, response) {
         if(!error) {
@@ -359,6 +387,30 @@ io.on('connection', co.wrap( function*(socket){
       });
     }))
   }));
+
+  socket.on('update_community',co.wrap(function*(_data) {
+    authLock(_data.token,co.wrap(function*(){
+      let data = _data.community;
+      console.log("community to update: "+ data.community_id);
+      var db_community = yield community_db.get(data.community_id);
+      data['_rev'] = db_community[0]._rev;
+      console.log(data);
+
+      yield global.community_db.insert(data, db_community[0]._id, 
+      function (error, response) {
+        if(!error) {
+          // console.log("Updated! it worked");
+          socket.emit('update_sucess', data);
+
+        } else {
+          // console.log("sad panda :´c");
+          var error_update = { reason : error };
+          socket.emit('update_failed', error_update);
+        }
+      });
+    }))
+  }));
+
 
   socket.on('authenticate',co.wrap(function*(data){
     if(data.username.length<1 || data.password.length<1){
@@ -516,7 +568,7 @@ io.on('connection', co.wrap( function*(socket){
             address : data.complaint.address,
             description : data.complaint.description,
             status : 0,
-            fecha:d.toISOString()
+            date:d.toISOString()
           }
   
           try {
